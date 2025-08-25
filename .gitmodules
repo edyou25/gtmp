@@ -1,0 +1,3 @@
+[submodule "kinax"]
+	path = kinax
+	url = git@github.com:anindex/kinax.git
