@@ -59,7 +59,7 @@ headingDivider: 2
 
 ---
 
-### 节点扩展与路径生成过程（动图）
+### 节点扩展与路径生成过程
 
 ![width:600px](demos/test.gif)
 
@@ -203,4 +203,21 @@ flowchart TD
 | **内存优化** | 显式`del`语句 | 减少内存峰值 |
 | **条件优化** | `lax.cond` | 编译时优化分支 |
 | **设备加速** | 自动GPU/TPU支持 | 硬件级别并行 |
+
+
+## bug-fix
+![alt text](96f9f12eb1419a8b88913ac172600b93.jpg)
+![alt text](96f9f12eb1419a8b88913ac172600b93-1.jpg)
+
+## rp
+
+- step1: computing
+- step2: feature
+- step3: understanding
+- plaform: **uav**
+   - 3d structure: **application -> theoretical**
+   - research area
+   - easy experiment
+
+
 
