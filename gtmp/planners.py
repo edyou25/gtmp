@@ -180,6 +180,7 @@ class GTMPOutput():
     dream_points: jax.Array = None
     splines: LayerAkima1DInterpolator = None
     V: jax.Array = None
+    debug_info: Dict[str, Any] = struct.field(default_factory=dict)
 
 
 
@@ -254,12 +255,19 @@ def gtmp_plan(key: jax.Array, state: GTMPState) -> GTMPOutput:
             return path, goal_idx
     collision = jnp.isinf(Vs)
     path, goal_idx = lax.cond(collision, lambda _: (jnp.zeros((state.num_layers + 2, q.shape[-1]), state.dtype), 0), get_path, None)
-
+    debug_info = {
+    "dream_points": dream_points,
+    "probes": state.probes,
+    # 可以加更多你想看的中间变量
+}
     # return distance to the subgoal
     output = GTMPOutput(
         path=path,
         goal_idx=goal_idx,
         collision=collision,
+        dream_points=dream_points,
+        V=Vh,
+        debug_info=debug_info  # 你可以在 GTMPOutput 里加一个 debug_info 
     )
     if state.visualize_value:
         output = output.replace(dream_points=dream_points, V=Vh)
@@ -345,7 +353,11 @@ def gtmp_akima_plan(key: jax.Array, state: GTMPState) -> GTMPOutput:
     if state.get_velocity:
         spline_vel = splines.derivative()
         path_vel = spline_vel.get_spline_interpolation(path_ids, num_points=state.num_probes)
-
+    debug_info = {
+    "dream_points": dream_points,
+    "probes": state.probes,
+    # 可以加更多你想看的中间变量
+}
     # return distance to the subgoal
     output = GTMPOutput(
         path=path,
@@ -353,6 +365,9 @@ def gtmp_akima_plan(key: jax.Array, state: GTMPState) -> GTMPOutput:
         goal_idx=goal_idx,
         collision=collision,
         splines=splines,
+        dream_points=dream_points,
+        V=Vh,
+        debug_info=debug_info  # 你可以在 GTMPOutput 里加一个 debug_info 
     )
     if state.visualize_value:
         output = output.replace(dream_points=dream_points, V=Vh)
