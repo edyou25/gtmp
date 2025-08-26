@@ -205,19 +205,6 @@ flowchart TD
 | **设备加速** | 自动GPU/TPU支持 | 硬件级别并行 |
 
 
-## bug-fix
-![alt text](96f9f12eb1419a8b88913ac172600b93.jpg)
-![alt text](96f9f12eb1419a8b88913ac172600b93-1.jpg)
-
-## rp
-
-- step1: computing
-- step2: feature
-- step3: understanding
-- plaform: **uav**
-   - 3d structure: **application -> theoretical**
-   - research area
-   - easy experiment
 
 
 
