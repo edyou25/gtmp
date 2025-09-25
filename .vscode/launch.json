@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: GTMP MBM (Debug)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/gtmp_mbm.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/kinax:${env:PYTHONPATH}",
+                "MPLBACKEND": "Agg",
+                "QT_API": "pyqt6",
+                "QT_QPA_PLATFORM": "offscreen"
+            },
+            "justMyCode": false
+        }
+    ]
+}

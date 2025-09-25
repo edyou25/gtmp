@@ -10,7 +10,7 @@ num_plans: 100
 num_goals: 1
 
 planner:
-  name: 'straight'
+  name: 'akima' # 'akima', 'straight'
   params:
     num_dreams: 50
     num_layers: 1
