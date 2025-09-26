@@ -21,16 +21,24 @@ from gtmp.pybullet import PyBulletSimulator
 
 from kinax.model import FRANKA_PANDA
 
+import logging
+logging.getLogger("jax").setLevel(logging.WARNING) # debug
+
 jax.config.update("jax_compilation_cache_dir", "/tmp/jax_cache")
+# 不设置缓存大小限制
 jax.config.update("jax_persistent_cache_min_entry_size_bytes", -1)
+# 不设置编译时间限制
 jax.config.update("jax_persistent_cache_min_compile_time_secs", 0)
+# 启用XLA持久缓存
 jax.config.update("jax_persistent_cache_enable_xla_caches", "xla_gpu_per_fusion_autotune_cache_dir")
 
 
+# 机械臂夹爪维度
 ROBOT_GRIPPER_DIMS = {
     'panda': 2,
 }
 
+# 机械臂碰撞体字典
 COLL_DICT = {
     'panda': {
         'panda_link1': 1, 'panda_link2': 2, 'panda_link3': 3, 'panda_link4': 4,
@@ -38,6 +46,7 @@ COLL_DICT = {
     },
 }
 
+# 机械臂关节字典
 ROBOT_JOINTS = {
     "panda": [
         "panda_joint1",
@@ -50,12 +59,14 @@ ROBOT_JOINTS = {
         ],
 }
 
+# 将问题字典转换为RAX的CostInfinite
 def problem_dict_to_rax(
         robot: str,
         problem: Dict[str, List[Dict[str, Union[float, List[float]]]]],
         link_dict: Dict[str, int],
         ignore_names: List[str] = []
     ) -> CostInfinite:
+    # ) -> Tuple[CostInfinite, Robot, int]:
     robot_model = Robot.create(
         model_path=FRANKA_PANDA
     )
@@ -111,9 +122,11 @@ def problem_dict_to_rax(
 
     return cost_fn, robot_model, dim
 
-
+# 随机种子、规划数量、环境地图文件与边界、起点终点、规划器类型及参数、以及Hydra输出目录等配置项。
 @hydra.main(version_base=None, config_path=get_configs_path().as_posix(), config_name="demo_gtmp_mbm")
 def main(cfg: omegaconf.DictConfig):
+    print(omegaconf.OmegaConf.to_yaml(cfg))
+
     rng_key = jax.random.PRNGKey(cfg.experiment.seed)
     robot = cfg.robot
     problem = cfg.problem
@@ -133,6 +146,7 @@ def main(cfg: omegaconf.DictConfig):
             )
 
     problems = data['problems'][problem]
+    print(f"Number of problems in {problem}: {len(problems)}")
     try:
         problem_data = next(problem for problem in problems if problem['index'] == index)
     except StopIteration:

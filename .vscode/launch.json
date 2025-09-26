@@ -5,7 +5,7 @@
             "name": "Python: GTMP MBM (Debug)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/examples/gtmp_mbm.py",
+            "program": "${workspaceFolder}/note/gtmp_mbm.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "env": {
